@@ -13,15 +13,18 @@ environment {
                 sh 'mvn clean deploy' 
             }
         }
-       stage('SonarQube analysis') {
-       environment {
-         scannerHome = tool 'test-sonar-scanner'
-    }
-    steps{
-    withSonarQubeEnv('test-sonarqube-server')
-      sh "${scannerHome}/bin/sonar-scanner"
-
+      stage('SonarCloud') {
+  environment {
+    SCANNER_HOME = tool 'test-sonar-scanner'
+    ORGANIZATION = "mydemoorg3"
+    PROJECT_NAME = "mydemoproject3"
   }
-}
-}
+  steps {
+    withSonarQubeEnv('test-sonarqube-server') {
+        sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
+        -Dsonar.java.binaries=build/classes/java/ \
+        -Dsonar.projectKey=$PROJECT_NAME \
+        -Dsonar.sources=.'''
+    }
+  }
 }
