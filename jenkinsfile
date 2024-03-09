@@ -15,15 +15,11 @@ environment {
         }
       stage('SonarCloud') {
   environment {
-    SCANNER_HOME = tool 'test-sonar-scanner'
-    ORGANIZATION = "mydemoorg3"
-    PROJECT_NAME = "mydemoproject3"
-  }
+    SCANNER_HOME = tool 'sonar-scanner'
+     }
   steps {
-    withSonarQubeEnv('test-sonarqube-server') {
-        sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
+    withSonarQubeEnv('sonarqube-server') {
         -Dsonar.java.binaries=build/classes/java/ \
-        -Dsonar.projectKey=$PROJECT_NAME \
         -Dsonar.sources=.'''
     }
   }
